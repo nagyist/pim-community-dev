@@ -201,6 +201,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql\GetAttributeGroups:
+        arguments:
+            - '@database_connection'
+            - '@feature_flags'
+
     Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\FindAttributeOptions:
         class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\SqlFindAttributeOptions
         arguments:
@@ -212,7 +217,3 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql\GetAttributeGroups:
-        arguments:
-            - '@database_connection'
-            - '@feature_flags'
