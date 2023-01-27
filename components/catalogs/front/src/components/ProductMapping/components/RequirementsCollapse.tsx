@@ -20,7 +20,7 @@ const WarningHelper = styled(Helper)`
 export const RequirementsCollapse: FC<Props> = ({target}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState(true);
-    const constraintKeys: string[] = ['minLength', 'maxLength'];
+    const constraintKeys: string[] = ['minLength', 'maxLength', 'pattern'];
     const translationKey = 'akeneo_catalogs.product_mapping.source.requirements.constraints';
 
     const constraints: Constraint[] = [];

@@ -1959,6 +1959,7 @@ test('it displays requirements', async () => {
                 description: 'Name description',
                 minLength: 3,
                 maxLength: 50,
+                pattern: '[a-zA-Z].',
             },
         },
     };
@@ -1984,6 +1985,9 @@ test('it displays requirements', async () => {
     ).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maxLength')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.pattern')
     ).toBeInTheDocument();
 });
 
@@ -2073,5 +2077,8 @@ test('it does not displays requirements', async () => {
     ).not.toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maxLength')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.pattern')
     ).not.toBeInTheDocument();
 });

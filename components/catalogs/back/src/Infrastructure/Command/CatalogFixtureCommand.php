@@ -125,6 +125,11 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => null,
                 ],
+                'phone_number' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ]
             ];
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
@@ -202,6 +207,10 @@ class CatalogFixtureCommand extends Command
               "type": "string",
               "minLength": 50,
               "maxLength": 160
+            },
+            "phone_number": {
+              "type": "string",
+              "pattern": "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$"
             }
           }
         }
