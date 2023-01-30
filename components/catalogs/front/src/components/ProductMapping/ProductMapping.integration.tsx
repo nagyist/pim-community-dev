@@ -1932,6 +1932,13 @@ test('it displays requirements', async () => {
                     scopable: false,
                     localizable: false,
                 },
+                {
+                    code: 'weight',
+                    label: 'Weight',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
             ],
         },
     ]);
@@ -1947,6 +1954,11 @@ test('it displays requirements', async () => {
             locale: 'en_US',
             scope: 'ecommerce',
         },
+        weight: {
+            source: 'weight',
+            locale: null,
+            scope: null,
+        },
     };
 
     const productMappingSchema = {
@@ -1960,6 +1972,12 @@ test('it displays requirements', async () => {
                 minLength: 3,
                 maxLength: 50,
                 pattern: '[a-zA-Z].',
+            },
+            weight: {
+                type: 'number',
+                description: 'Weight description',
+                minimum: 0,
+                maximum: 100,
             },
         },
     };
@@ -1988,6 +2006,16 @@ test('it displays requirements', async () => {
     ).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.pattern')
+    ).toBeInTheDocument();
+
+    await clickOnMappingTarget('weight');
+    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.title')).toBeInTheDocument();
+    expect(screen.queryByText('Weight description')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.minimum')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maximum')
     ).toBeInTheDocument();
 });
 
@@ -2029,6 +2057,13 @@ test('it does not displays requirements', async () => {
                     scopable: false,
                     localizable: false,
                 },
+                {
+                    code: 'weight',
+                    label: 'Weight',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
             ],
         },
     ]);
@@ -2044,6 +2079,11 @@ test('it does not displays requirements', async () => {
             locale: 'en_US',
             scope: 'ecommerce',
         },
+        weight: {
+            source: 'weight',
+            locale: null,
+            scope: null,
+        },
     };
 
     const productMappingSchema = {
@@ -2054,6 +2094,9 @@ test('it does not displays requirements', async () => {
             name: {
                 type: 'string',
             },
+            weight: {
+                type: 'number',
+            }
         },
     };
 
@@ -2080,5 +2123,14 @@ test('it does not displays requirements', async () => {
     ).not.toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.pattern')
+    ).not.toBeInTheDocument();
+
+    await clickOnMappingTarget('weight');
+    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.title')).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.minimum')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maximum')
     ).not.toBeInTheDocument();
 });
