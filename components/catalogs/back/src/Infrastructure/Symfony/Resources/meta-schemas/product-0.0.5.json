@@ -90,6 +90,9 @@
         "pattern": {
           "type": "string",
           "format": "regex"
+        },
+        "enum": {
+          "type": "array"
         }
       },
       "additionalProperties": false,
@@ -128,6 +131,9 @@
         "pattern": {
           "type": "string",
           "format": "regex"
+        },
+        "enum": {
+          "type": "array"
         }
       },
       "additionalProperties": false,
@@ -144,7 +150,32 @@
         {
           "$ref": "#/$defs/propertyWithTypeAndFormat"
         }
-      ]
+      ],
+      "if": {
+        "properties": {
+          "type": {
+            "const": "string"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "enum": {
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "enum": {
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      }
     },
     "uriString": {
       "type": "string",

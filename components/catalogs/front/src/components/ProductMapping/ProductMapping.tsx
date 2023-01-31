@@ -61,6 +61,9 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             if (undefined !== productMappingSchema.properties[targetCode].pattern) {
                 target.pattern = productMappingSchema.properties[targetCode].pattern;
             }
+            if (undefined !== productMappingSchema.properties[targetCode].enum) {
+                target.enum = productMappingSchema.properties[targetCode].enum;
+            }
             setSelectedTarget(target);
             setSelectedSource(source);
         },

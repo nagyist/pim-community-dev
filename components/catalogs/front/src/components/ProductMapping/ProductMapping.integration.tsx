@@ -1960,6 +1960,7 @@ test('it displays requirements', async () => {
                 minLength: 3,
                 maxLength: 50,
                 pattern: '[a-zA-Z].',
+                enum: ['S', 'M', 'L'],
             },
         },
     };
@@ -1988,6 +1989,9 @@ test('it displays requirements', async () => {
     ).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.pattern')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')
     ).toBeInTheDocument();
 });
 
@@ -2080,5 +2084,8 @@ test('it does not displays requirements', async () => {
     ).not.toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.pattern')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')
     ).not.toBeInTheDocument();
 });

@@ -7,4 +7,5 @@ export type Target = {
     minLength?: number;
     maxLength?: number;
     pattern?: string;
+    enum?: string[] | number[];
 };
