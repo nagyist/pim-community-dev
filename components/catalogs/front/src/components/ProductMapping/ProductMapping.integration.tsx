@@ -2096,7 +2096,7 @@ test('it does not displays requirements', async () => {
             },
             weight: {
                 type: 'number',
-            }
+            },
         },
     };
 
