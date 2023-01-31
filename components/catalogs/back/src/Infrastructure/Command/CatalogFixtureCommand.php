@@ -129,7 +129,7 @@ class CatalogFixtureCommand extends Command
                     'source' => null,
                     'scope' => null,
                     'locale' => null,
-                ]
+                ],
             ];
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
