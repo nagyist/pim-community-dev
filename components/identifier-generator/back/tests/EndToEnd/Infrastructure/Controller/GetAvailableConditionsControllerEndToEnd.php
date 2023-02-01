@@ -67,6 +67,16 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
                         ],
                     ],
                 ],
+                [
+                    'id' => 'attributeGroupC',
+                    'text' => 'Attribute group C',
+                    'children' => [
+                        [
+                            'id' => 'a_multi_select',
+                            'text' => 'A multi select',
+                        ],
+                    ],
+                ],
             ]
         );
     }
@@ -113,6 +123,16 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'a_simple_select_size',
                             'text' => 'The size',
+                        ],
+                    ],
+                ],
+                [
+                    'id' => 'attributeGroupC',
+                    'text' => 'Attribute group C',
+                    'children' => [
+                        [
+                            'id' => 'a_multi_select',
+                            'text' => 'A multi select',
                         ],
                     ],
                 ],
@@ -196,6 +216,16 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
                         ],
                     ],
                 ],
+                [
+                    'id' => 'attributeGroupC',
+                    'text' => 'Groupe d\'attribut C',
+                    'children' => [
+                        [
+                            'id' => 'a_multi_select',
+                            'text' => '[a_multi_select]',
+                        ],
+                    ],
+                ],
             ]
         );
     }
@@ -233,6 +263,7 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
         $this->updateAttributeLabels('a_simple_select', ['en_US' => 'A simple select']);
         $this->updateAttributeLabels('a_simple_select_color', ['en_US' => 'The color', 'fr_FR' => 'La couleur']);
         $this->updateAttributeLabels('a_simple_select_size', ['en_US' => 'The size', 'fr_FR' => 'La taille']);
+        $this->updateAttributeLabels('a_multi_select', ['en_US' => 'A multi select']);
 
         // update French system translations
         /** @var MessageCatalogueInterface $frenchCatalogue */
@@ -255,6 +286,9 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
     private function updateAttributeLabels(string $attributeCode, array $labels): void
     {
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($attributeCode);
+        if (null === $attribute) {
+            return;
+        }
         $this->get('pim_catalog.updater.attribute')->update($attribute, ['labels' => $labels]);
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
