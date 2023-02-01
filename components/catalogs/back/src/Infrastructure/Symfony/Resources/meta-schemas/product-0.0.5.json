@@ -38,8 +38,16 @@
       "required": [
         "uuid"
       ]
+    },
+    "required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "default": []
     }
-  },
+},
   "$defs": {
     "$id": {
       "$comment": "Non-empty fragments not allowed.",
