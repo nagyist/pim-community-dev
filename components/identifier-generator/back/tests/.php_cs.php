@@ -14,6 +14,9 @@ return (new PhpCsFixer\Config())
         'no_extra_blank_lines' => true,
         'trailing_comma_in_multiline' => true,
         'void_return' => true,
+        'native_function_invocation' => [
+            'include' => ['@all'],
+        ],
     ))
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(

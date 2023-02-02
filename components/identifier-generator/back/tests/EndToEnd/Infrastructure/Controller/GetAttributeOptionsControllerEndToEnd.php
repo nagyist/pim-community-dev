@@ -65,7 +65,7 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
             ],
         ];
 
-        Assert::assertEquals($expected, json_decode($response->getContent(), true));
+        Assert::assertEquals($expected, \json_decode($response->getContent(), true));
     }
 
     /** @test */
@@ -89,7 +89,7 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
             ],
         ];
 
-        Assert::assertEquals($expectedFirstPage, json_decode($firstResponse->getContent(), true));
+        Assert::assertEquals($expectedFirstPage, \json_decode($firstResponse->getContent(), true));
 
         $this->callGetRouteWithQueryParam(
             'akeneo_identifier_generator_get_attribute_options',
@@ -107,7 +107,7 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
             ],
         ];
 
-        Assert::assertEquals($expectedSecondPage, json_decode($response->getContent(), true));
+        Assert::assertEquals($expectedSecondPage, \json_decode($response->getContent(), true));
     }
 
     /** @test */
@@ -134,7 +134,7 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
             ],
         ];
 
-        Assert::assertSame($expected, json_decode($response->getContent(), true));
+        Assert::assertSame($expected, \json_decode($response->getContent(), true));
     }
 
     protected function getConfiguration(): Configuration

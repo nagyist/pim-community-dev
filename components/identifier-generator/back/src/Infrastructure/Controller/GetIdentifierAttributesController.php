@@ -40,7 +40,7 @@ final class GetIdentifierAttributesController
             'label' => $attribute->getLabel(),
         ];
 
-        return new JsonResponse(array_map(
+        return new JsonResponse(\array_map(
             $normalizeAttribute,
             $attributes
         ), Response::HTTP_OK);
