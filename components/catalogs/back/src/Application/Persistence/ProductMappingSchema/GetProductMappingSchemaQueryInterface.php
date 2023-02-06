@@ -12,7 +12,8 @@ interface GetProductMappingSchemaQueryInterface
 {
     /**
      * @return array{
-     *      properties: array<array-key, mixed>
+     *      properties: array<array-key, mixed>,
+     *      required?: string[]
      * }
      */
     public function execute(string $catalogId): array;

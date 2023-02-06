@@ -20,7 +20,7 @@ interface ProductMapperInterface
 {
     /**
      * @param RawProduct $product
-     * @param array{properties: array<array-key, mixed>} $productMappingSchema
+     * @param array{properties: array<array-key, mixed>, required?: string[]} $productMappingSchema
      * @param ProductMapping $productMapping
      *
      * @return MappedProduct

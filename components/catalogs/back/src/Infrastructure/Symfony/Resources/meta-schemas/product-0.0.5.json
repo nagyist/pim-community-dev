@@ -45,7 +45,8 @@
         "type": "string"
       },
       "uniqueItems": true,
-      "default": []
+      "default": [],
+      "minItems": 1
     }
 },
   "$defs": {

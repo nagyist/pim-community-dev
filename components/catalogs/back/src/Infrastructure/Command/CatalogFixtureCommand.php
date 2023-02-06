@@ -134,7 +134,7 @@ class CatalogFixtureCommand extends Command
                     'source' => null,
                     'scope' => null,
                     'locale' => null,
-                ]
+                ],
             ];
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
@@ -221,7 +221,8 @@ class CatalogFixtureCommand extends Command
               "type": "string",
               "enum": ["S", "M", "L"]
             }
-          }
+          },
+          "required": ["description"]
         }
         JSON_WRAP;
     }
