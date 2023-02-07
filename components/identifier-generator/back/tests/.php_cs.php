@@ -17,11 +17,14 @@ return (new PhpCsFixer\Config())
         'native_function_invocation' => [
             'include' => ['@all'],
         ],
+        'no_spaces_around_offset' => true,
+        'no_useless_return' => true,
+        'array_indentation' => true,
     ))
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->name('*.php')
             ->notName('*Spec.php')
-            ->in(__DIR__.'/../')
+            ->in(__DIR__ . '/../')
     );

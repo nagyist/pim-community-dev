@@ -178,28 +178,28 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function iTryToUpdateAnIdentifierGeneratorWithTooManyPropertiesInStructure(): void
     {
         $this->tryToUpdateGenerator(structure: [
-                    ['type' => 'free_text', 'string' => 'abcdef1'],
-                    ['type' => 'free_text', 'string' => 'abcdef2'],
-                    ['type' => 'free_text', 'string' => 'abcdef3'],
-                    ['type' => 'free_text', 'string' => 'abcdef4'],
-                    ['type' => 'free_text', 'string' => 'abcdef5'],
-                    ['type' => 'free_text', 'string' => 'abcdef6'],
-                    ['type' => 'free_text', 'string' => 'abcdef7'],
-                    ['type' => 'free_text', 'string' => 'abcdef8'],
-                    ['type' => 'free_text', 'string' => 'abcdef9'],
-                    ['type' => 'free_text', 'string' => 'abcdef10'],
-                    ['type' => 'free_text', 'string' => 'abcdef11'],
-                    ['type' => 'free_text', 'string' => 'abcdef12'],
-                    ['type' => 'free_text', 'string' => 'abcdef13'],
-                    ['type' => 'free_text', 'string' => 'abcdef14'],
-                    ['type' => 'free_text', 'string' => 'abcdef15'],
-                    ['type' => 'free_text', 'string' => 'abcdef16'],
-                    ['type' => 'free_text', 'string' => 'abcdef17'],
-                    ['type' => 'free_text', 'string' => 'abcdef18'],
-                    ['type' => 'free_text', 'string' => 'abcdef19'],
-                    ['type' => 'free_text', 'string' => 'abcdef20'],
-                    ['type' => 'free_text', 'string' => 'abcdef21'],
-                ]);
+            ['type' => 'free_text', 'string' => 'abcdef1'],
+            ['type' => 'free_text', 'string' => 'abcdef2'],
+            ['type' => 'free_text', 'string' => 'abcdef3'],
+            ['type' => 'free_text', 'string' => 'abcdef4'],
+            ['type' => 'free_text', 'string' => 'abcdef5'],
+            ['type' => 'free_text', 'string' => 'abcdef6'],
+            ['type' => 'free_text', 'string' => 'abcdef7'],
+            ['type' => 'free_text', 'string' => 'abcdef8'],
+            ['type' => 'free_text', 'string' => 'abcdef9'],
+            ['type' => 'free_text', 'string' => 'abcdef10'],
+            ['type' => 'free_text', 'string' => 'abcdef11'],
+            ['type' => 'free_text', 'string' => 'abcdef12'],
+            ['type' => 'free_text', 'string' => 'abcdef13'],
+            ['type' => 'free_text', 'string' => 'abcdef14'],
+            ['type' => 'free_text', 'string' => 'abcdef15'],
+            ['type' => 'free_text', 'string' => 'abcdef16'],
+            ['type' => 'free_text', 'string' => 'abcdef17'],
+            ['type' => 'free_text', 'string' => 'abcdef18'],
+            ['type' => 'free_text', 'string' => 'abcdef19'],
+            ['type' => 'free_text', 'string' => 'abcdef20'],
+            ['type' => 'free_text', 'string' => 'abcdef21'],
+        ]);
     }
 
     /**
@@ -208,9 +208,9 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function iTryToUpdateAnIdentifierGeneratorWithMultipleAutoNumberInStructure(): void
     {
         $this->tryToUpdateGenerator(structure: [
-                    ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
-                    ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
-                ]);
+            ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
+            ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
+        ]);
     }
 
     /**
@@ -519,11 +519,13 @@ final class UpdateIdentifierGeneratorContext implements Context
                 'type' => 'enabled',
                 'value' => true,
             ];
+
             case 'family': return [
                 'type' => 'family',
                 'operator' => $operator ?? 'IN',
                 'value' => ['tshirt'],
             ];
+
             case 'simple_select': return [
                 'type' => 'simple_select',
                 'operator' => $operator ?? 'IN',
