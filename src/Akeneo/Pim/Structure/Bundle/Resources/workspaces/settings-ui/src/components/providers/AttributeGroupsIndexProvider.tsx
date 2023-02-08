@@ -5,6 +5,7 @@ import {AfterMoveRowHandler} from '../shared/providers';
 
 type AttributeGroupsIndexState = {
   attributeGroups: AttributeGroup[];
+  isSelected: boolean;
   saveOrder: () => Promise<void>;
   load: () => Promise<void>;
   redirect: (group: AttributeGroup) => void;

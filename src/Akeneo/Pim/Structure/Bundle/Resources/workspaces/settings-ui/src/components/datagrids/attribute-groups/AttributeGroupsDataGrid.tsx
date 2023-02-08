@@ -11,7 +11,7 @@ type Props = {
   onGroupCountChange: (newGroupCount: number) => void;
 };
 const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange}) => {
-  const {refreshOrder, selectAttributeGroup} = useAttributeGroupsIndexState();
+  const {refreshOrder, selectAttributeGroup, isSelected} = useAttributeGroupsIndexState();
   const {sortGranted} = useAttributeGroupPermissions();
   const userContext = useUserContext();
   const {filteredGroups, search} = useFilteredAttributeGroups(attributeGroups);
@@ -53,7 +53,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange
         />
       ) : (
         <Table
-          isDragAndDroppable={sortGranted}
+          isDragAndDroppable={sortGranted && !isSelected}
           isSelectable={false}
           onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
         >
