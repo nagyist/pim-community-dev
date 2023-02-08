@@ -7,15 +7,14 @@ import {NoResults} from '../../shared';
 import {getLabel} from 'pimui/js/i18n';
 
 type Props = {
-  groups: AttributeGroup[];
+  attributeGroups: AttributeGroup[];
   onGroupCountChange: (newGroupCount: number) => void;
 };
-
-const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
-  const {refreshOrder} = useAttributeGroupsIndexState();
+const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange}) => {
+  const {refreshOrder, selectAttributeGroup} = useAttributeGroupsIndexState();
   const {sortGranted} = useAttributeGroupPermissions();
   const userContext = useUserContext();
-  const {filteredGroups, search} = useFilteredAttributeGroups(groups);
+  const {filteredGroups, search} = useFilteredAttributeGroups(attributeGroups);
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -56,7 +55,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
         <Table
           isDragAndDroppable={sortGranted}
           isSelectable={false}
-          onReorder={order => refreshOrder(order.map(index => groups[index]))}
+          onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
         >
           <Table.Header>
             <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
@@ -67,15 +66,21 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
             )}
           </Table.Header>
           <Table.Body>
-            {filteredGroups.map(group => (
-              <Table.Row key={group.code} isSelected={false} onSelectToggle={() => {}}>
-                <Table.Cell>{getLabel(group.labels, userContext.get('catalogLocale'), group.code)}</Table.Cell>
+            {filteredGroups.map(attributeGroup => (
+              <Table.Row
+                key={attributeGroup.code}
+                isSelected={attributeGroup.selected ?? false}
+                onSelectToggle={() => selectAttributeGroup(attributeGroup)}
+              >
+                <Table.Cell>
+                  {getLabel(attributeGroup.labels, userContext.get('catalogLocale'), attributeGroup.code)}
+                </Table.Cell>
                 {featureFlags.isEnabled('data_quality_insights') && (
                   <Table.Cell>
-                    <Badge level={group.is_dqi_activated ? 'primary' : 'danger'}>
+                    <Badge level={attributeGroup.is_dqi_activated ? 'primary' : 'danger'}>
                       {translate(
                         `akeneo_data_quality_insights.attribute_group.${
-                          group.is_dqi_activated ? 'activated' : 'disabled'
+                          attributeGroup.is_dqi_activated ? 'activated' : 'disabled'
                         }`
                       )}
                     </Badge>

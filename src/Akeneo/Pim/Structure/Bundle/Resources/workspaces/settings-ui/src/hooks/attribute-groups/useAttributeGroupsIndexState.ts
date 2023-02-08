@@ -18,7 +18,7 @@ const useAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
 const ATTRIBUTE_GROUP_INDEX_ROUTE = 'pim_structure_attributegroup_rest_index';
 
 const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
-  const [groups, setAttributeGroups] = useState<AttributeGroup[]>([]);
+  const [attributeGroups, setAttributeGroups] = useState<AttributeGroup[]>([]);
   const [isPending, setIsPending] = useState(true);
   const router = useRouter();
 
@@ -36,11 +36,11 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
 
     const route = router.generate(ATTRIBUTE_GROUP_INDEX_ROUTE);
     const response = await fetch(route);
-    const groups = await response.json();
+    const attributeGroups = await response.json();
 
-    setAttributeGroups(groups);
+    setAttributeGroups(attributeGroups);
     setIsPending(false);
-  }, [refresh]);
+  }, [router, setAttributeGroups, setIsPending]);
 
   const saveOrder = useCallback(async (reorderedGroups: AttributeGroup[]) => {
     const order: {[code: string]: number} = {};
@@ -67,19 +67,30 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
     [refresh, saveOrder]
   );
 
-  const compare = (source: AttributeGroup, target: AttributeGroup) => {
-    return source.code.localeCompare(target.code);
-  };
+  const selectAttributeGroup = useCallback(
+    (selectedAttributeGroup: AttributeGroup) => {
+      refresh(
+        attributeGroups.map((attributeGroup: AttributeGroup) => {
+          if (attributeGroup.code === selectedAttributeGroup.code) {
+            attributeGroup.selected = !attributeGroup.selected;
+          }
+
+          return attributeGroup;
+        })
+      );
+    },
+    [attributeGroups, refresh]
+  );
 
   return {
-    groups,
+    attributeGroups,
     load,
     saveOrder,
     redirect,
     refresh,
     refreshOrder,
-    compare,
     isPending,
+    selectAttributeGroup,
   };
 };
 

@@ -1,27 +1,27 @@
 import React, {createContext, FC} from 'react';
 import {AttributeGroup} from '../../models';
 import {useInitialAttributeGroupsIndexState} from '../../hooks/attribute-groups';
-import {AfterMoveRowHandler, CompareRowDataHandler} from '../shared/providers';
+import {AfterMoveRowHandler} from '../shared/providers';
 
 type AttributeGroupsIndexState = {
-  groups: AttributeGroup[];
+  attributeGroups: AttributeGroup[];
   saveOrder: () => Promise<void>;
   load: () => Promise<void>;
   redirect: (group: AttributeGroup) => void;
   refresh: (refreshedGroups: AttributeGroup[]) => void;
   refreshOrder: AfterMoveRowHandler<AttributeGroup>;
-  compare: CompareRowDataHandler<AttributeGroup>;
   isPending: boolean;
+  selectAttributeGroup: (group: AttributeGroup) => void;
 };
 
 const AttributeGroupsIndexContext = createContext<AttributeGroupsIndexState>({
-  groups: [],
+  attributeGroups: [],
   saveOrder: async () => {},
   load: async () => {},
   redirect: () => {},
   refresh: () => {},
   refreshOrder: () => {},
-  compare: () => -1,
+  selectAttributeGroup: () => {},
   isPending: true,
 });
 
