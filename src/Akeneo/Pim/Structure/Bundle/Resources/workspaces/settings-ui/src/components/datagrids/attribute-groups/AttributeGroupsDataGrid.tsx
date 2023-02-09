@@ -6,15 +6,21 @@ import {getLabel} from 'pimui/js/i18n';
 import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
 import {useDebounceCallback, useTranslate, useFeatureFlags, useUserContext} from '@akeneo-pim-community/shared';
 import {MassDeleteAttributeGroups} from './MassDeleteAttributeGroups';
+import styled from 'styled-components';
 
 type Props = {
   attributeGroups: AttributeGroup[];
   onGroupCountChange: (newGroupCount: number) => void;
 };
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange}) => {
   const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
-    useSelection<AttributeGroup>(0);
+    useSelection<AttributeGroup>(attributeGroups.length);
   const {refreshOrder, selectAttributeGroup, isSelected} = useAttributeGroupsIndexState();
   const {sortGranted} = useAttributeGroupPermissions();
   const userContext = useUserContext();
@@ -38,7 +44,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange
   }, [filteredGroups.length]);
 
   return (
-    <>
+    <Wrapper>
       <Search
         sticky={0}
         placeholder={translate('pim_common.search')}
@@ -57,7 +63,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange
         />
       ) : (
         <Table
-          isDragAndDroppable={sortGranted && !selectionState}
+          isDragAndDroppable={sortGranted && !!selectionState}
           isSelectable={false}
           onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
         >
@@ -95,9 +101,9 @@ const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange
           </Table.Body>
         </Table>
       )}
-      <Toolbar isVisible={isSelected}>
+      <Toolbar isVisible={!!selectionState}>
         <Toolbar.SelectionContainer>
-          <Checkbox checked={!selectionState} onChange={() => {}} />
+          <Checkbox checked={selectionState} onChange={() => {}} />
         </Toolbar.SelectionContainer>
         <Toolbar.LabelContainer>
           {translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}
@@ -106,7 +112,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange
           <MassDeleteAttributeGroups attributeGroups={selection.collection} />
         </Toolbar.ActionsContainer>
       </Toolbar>
-    </>
+    </Wrapper>
   );
 };
 
