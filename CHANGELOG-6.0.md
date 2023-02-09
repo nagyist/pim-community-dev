@@ -4,6 +4,12 @@
 
 - PIM-10826: Fix GET system-information endpoint with wrong answers
 
+# 6.0.68 (2023-02-09)
+
+## Bug fixes
+
+- Pim 10810: Optimize completeness saving
+
 # 6.0.67 (2023-02-06)
 
 # 6.0.66 (2023-02-02)
