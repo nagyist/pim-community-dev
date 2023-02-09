@@ -5,6 +5,7 @@ import {Search, useAutoFocus, Table, Badge, Toolbar, Checkbox, useSelection} fro
 import {getLabel} from 'pimui/js/i18n';
 import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
 import {useDebounceCallback, useTranslate, useFeatureFlags, useUserContext} from '@akeneo-pim-community/shared';
+import {MassDeleteAttributeGroups} from './MassDeleteAttributeGroups';
 
 type Props = {
   attributeGroups: AttributeGroup[];
@@ -56,7 +57,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange
         />
       ) : (
         <Table
-          isDragAndDroppable={sortGranted && !isSelected}
+          isDragAndDroppable={sortGranted && !selectionState}
           isSelectable={false}
           onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
         >
@@ -101,6 +102,9 @@ const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange
         <Toolbar.LabelContainer>
           {translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}
         </Toolbar.LabelContainer>
+        <Toolbar.ActionsContainer>
+          <MassDeleteAttributeGroups attributeGroups={selection.collection} />
+        </Toolbar.ActionsContainer>
       </Toolbar>
     </>
   );
