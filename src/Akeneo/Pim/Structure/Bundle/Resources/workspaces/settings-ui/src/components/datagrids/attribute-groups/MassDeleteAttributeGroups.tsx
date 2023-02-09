@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {AttributeGroup} from '../../../models';
-import {Button, TextInput, useBooleanState, Field, useAutoFocus} from 'akeneo-design-system';
+import {Button, TextInput, useBooleanState, Field, useAutoFocus, Helper} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 
 type MassDeleteAttributeGroupsProps = {
@@ -10,7 +10,8 @@ const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsP
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
   const [confirmationText, setConfirmationText] = useState<string>('');
-  const isValid = false;
+  const [numberOfAttribute, setNumberOfAttribute] = useState<number>(0);
+  const isValid = translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word') === confirmationText;
   const inputRef = useRef<HTMLInputElement>(null);
 
   useAutoFocus(inputRef);
@@ -19,6 +20,11 @@ const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsP
     if (!isValid) return;
 
     //onConfirm();
+  };
+
+  const handleCancel = () => {
+    closeMassDeleteModal();
+    setConfirmationText('');
   };
 
   return (
@@ -30,7 +36,7 @@ const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsP
         <DeleteModal
           title={translate('pim_enrich.entity.attribute_group.mass_delete.title')}
           onConfirm={handleConfirm}
-          onCancel={() => closeMassDeleteModal()}
+          onCancel={handleCancel}
           canConfirmDelete={isValid}
         >
           <p>
@@ -40,12 +46,18 @@ const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsP
               attributeGroups.length
             )}
           </p>
-          <p>
-            {translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_phrase', {
+          {numberOfAttribute > 0 && (
+            <Helper level={'error'}>
+              {translate('pim_enrich.entity.attribute_group.mass_delete.attribute_warning', {
+                number_of_attribute: numberOfAttribute,
+              })}
+            </Helper>
+          )}
+          <Field
+            label={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_phrase', {
               confirmation_word: translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word'),
             })}
-          </p>
-          <Field label={translate('pim_enrich.entity.attribute_group.mass_delete.confirm_label')}>
+          >
             <TextInput
               ref={inputRef}
               value={confirmationText}
