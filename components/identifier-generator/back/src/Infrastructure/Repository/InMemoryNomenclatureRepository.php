@@ -25,6 +25,15 @@ class InMemoryNomenclatureRepository implements NomenclatureRepository
         return $this->nomenclatureDefinitions[$propertyCode] ?? null;
     }
 
+    public function getValue(string $propertyCode, string $value): ?string
+    {
+        if (!isset($this->nomenclatureDefinitions[$propertyCode])) {
+            return null;
+        }
+
+        return $this->nomenclatureDefinitions[$propertyCode]->values()[$value];
+    }
+
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
     {
         $this->nomenclatureDefinitions[$propertyCode] = $nomenclatureDefinition;

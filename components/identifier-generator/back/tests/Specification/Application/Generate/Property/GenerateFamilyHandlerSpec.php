@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToGenerateFamilyNomenclatureException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
@@ -19,12 +20,15 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInte
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class GenerateFamilyHandlerSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function let(NomenclatureRepository $nomenclatureRepository): void
     {
+        $this->beConstructedWith($nomenclatureRepository);
     }
 
     public function it_should_support_only_family_property(): void
@@ -155,6 +159,56 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
             $this->getProductProjection('fam'),
             'AKN-'
         )->shouldReturn('fam');
+    }
+
+    public function it_should_return_family_code_with_nomenclature(NomenclatureRepository $nomenclatureRepository): void
+    {
+        $family = FamilyProperty::fromNormalized([
+            'type' => FamilyProperty::type(),
+            'process' => [
+                'type' => Process::PROCESS_TYPE_NOMENCLATURE,
+            ]
+        ]);
+
+        $identifierGenerator = $this->getIdentifierGenerator($family);
+
+        $nomenclatureRepository
+            ->getValue(Argument::any(), Argument::any())
+            ->shouldBeCalled()
+            ->willReturn('fam');
+
+        $this->__invoke(
+            $family,
+            $identifierGenerator,
+            $this->getProductProjection('familyCode'),
+            'AKN-'
+        )->shouldReturn('fam');
+    }
+
+    public function it_should_throw_an_error_if_family_nomenclature_doesnt_exist(NomenclatureRepository $nomenclatureRepository): void
+    {
+        $family = FamilyProperty::fromNormalized([
+            'type' => FamilyProperty::type(),
+            'process' => [
+                'type' => Process::PROCESS_TYPE_NOMENCLATURE,
+            ]
+        ]);
+
+        $identifierGenerator = $this->getIdentifierGenerator($family);
+
+        $nomenclatureRepository
+            ->getValue(Argument::any(), Argument::any())
+            ->shouldBeCalled()
+            ->willReturn(null);
+
+        $this->shouldThrow(new UnableToGenerateFamilyNomenclatureException('AKN-fam', 'sku'))->during(
+            '__invoke', [
+                $family,
+                $identifierGenerator,
+                $this->getProductProjection('fam'),
+                'AKN-'
+            ]
+        );
     }
 
     private function getProductProjection(string $familyCode): ProductProjection

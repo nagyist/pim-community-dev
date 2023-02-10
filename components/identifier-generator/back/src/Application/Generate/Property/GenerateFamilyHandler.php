@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToGenerateFamilyNomenclatureException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
 use Webmozart\Assert\Assert;
 
 /**
@@ -18,6 +20,11 @@ use Webmozart\Assert\Assert;
  */
 final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
 {
+    public function __construct(
+        private readonly NomenclatureRepository $nomenclatureRepository
+    ) {
+    }
+
     public function __invoke(
         PropertyInterface $familyProperty,
         IdentifierGenerator $identifierGenerator,
@@ -43,6 +50,16 @@ final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
                 }
 
                 return \substr($productProjection->familyCode(), 0, $familyProperty->process()->value());
+            case Process::PROCESS_TYPE_NOMENCLATURE:
+                $repoValue = $this->nomenclatureRepository->getValue('family', $productProjection->familyCode());
+                if ($repoValue) {
+                    return $repoValue;
+                }
+
+                throw new UnableToGenerateFamilyNomenclatureException(
+                    sprintf('%s%s', $prefix, $productProjection->familyCode()),
+                    $identifierGenerator->target()->asString(),
+                );
             case Process::PROCESS_TYPE_NO:
             default:
                 return $productProjection->familyCode();

@@ -14,5 +14,7 @@ interface NomenclatureRepository
 {
     public function get(string $propertyCode): ?NomenclatureDefinition;
 
+    public function getValue(string $propertyCode, string $value): ?string;
+
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void;
 }

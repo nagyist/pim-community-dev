@@ -32,6 +32,18 @@ class SqlNomenclatureRepository implements NomenclatureRepository
         return $nomenclatureDefinition;
     }
 
+    public function getValue(string $propertyCode, string $value): ?string
+    {
+        $nomenclatureDefinition = $this->getNomenclatureDefinition($propertyCode);
+        if (null !== $nomenclatureDefinition) {
+            $values = $this->getNomenclatureValues();
+
+            return $values[$value];
+        }
+
+        return null;
+    }
+
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
     {
         $this->updateDefinition($propertyCode, $nomenclatureDefinition);
