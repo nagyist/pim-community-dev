@@ -3,12 +3,16 @@ import {PropertyEditFieldsProps} from '../PropertyEdit';
 import {AbbreviationType, FamilyProperty, FamilyPropertyOperators, Operator} from '../../../models';
 import {Field, NumberInput, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {OperatorSelector} from '../../../components';
+import {NomenclatureEdit, OperatorSelector} from '../../../components';
 import {Styled} from '../../../components/Styled';
 
 const options = [
   {value: AbbreviationType.TRUNCATE, label: 'pim_identifier_generator.structure.settings.code_format.type.truncate'},
   {value: AbbreviationType.NO, label: 'pim_identifier_generator.structure.settings.code_format.type.code'},
+  {
+    value: AbbreviationType.NOMENCLATURE,
+    label: 'pim_identifier_generator.structure.settings.code_format.type.nomenclature',
+  },
 ];
 
 const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedProperty, onChange}) => {
@@ -25,11 +29,18 @@ const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedPr
             operator: null,
           },
         });
-      } else {
+      } else if (type === AbbreviationType.NO) {
         onChange({
           type: selectedProperty.type,
           process: {
             type: AbbreviationType.NO,
+          },
+        });
+      } else {
+        onChange({
+          type: selectedProperty.type,
+          process: {
+            type: AbbreviationType.NOMENCLATURE,
           },
         });
       }
@@ -101,6 +112,7 @@ const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedPr
           </Field>
         </>
       )}
+      {selectedProperty.process.type === AbbreviationType.NOMENCLATURE && <NomenclatureEdit />}
     </Styled.EditionContainer>
   );
 };
