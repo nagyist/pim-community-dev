@@ -1,8 +1,9 @@
 import React, {FC, useEffect, useState} from 'react';
 import {PageContent, PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
-import {AttributeGroupsCreateButton, AttributeGroupsDataGrid} from '../components';
+import {AttributeGroupsCreateButton, AttributeGroupsDataGrid, MassDeleteAttributeGroups} from '../components';
 import {useAttributeGroupsIndexState} from '../hooks';
-import {Breadcrumb} from 'akeneo-design-system';
+import {Breadcrumb, Checkbox, Toolbar, useSelection} from 'akeneo-design-system';
+import {AttributeGroup} from '../models';
 
 const AttributeGroupsIndex: FC = () => {
   const {attributeGroups, load, isPending} = useAttributeGroupsIndexState();
