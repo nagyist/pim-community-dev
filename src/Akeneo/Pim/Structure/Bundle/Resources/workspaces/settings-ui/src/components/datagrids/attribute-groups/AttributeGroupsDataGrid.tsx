@@ -5,24 +5,20 @@ import {Search, useAutoFocus, Table, Badge, Toolbar, Checkbox, useSelection} fro
 import {getLabel} from 'pimui/js/i18n';
 import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
 import {useDebounceCallback, useTranslate, useFeatureFlags, useUserContext} from '@akeneo-pim-community/shared';
-import {MassDeleteAttributeGroups} from './MassDeleteAttributeGroups';
 import styled from 'styled-components';
 
 type Props = {
   attributeGroups: AttributeGroup[];
   onGroupCountChange: (newGroupCount: number) => void;
+  isItemSelected: (attributeGroup: AttributeGroup) => boolean;
+  selectionState: boolean | 'mixed';
+  onSelectionChange: (attributeGroup: AttributeGroup, selected: boolean) => void;
+  selectedCount: number;
 };
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const ToolbarWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  margin-left: -40px;
-  width: 100%;
 `;
 
 const InfoTop = styled.div`
@@ -31,10 +27,15 @@ const InfoTop = styled.div`
   padding: 38px 20px;
 `;
 
-const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange}) => {
-  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
-    useSelection<AttributeGroup>(attributeGroups.length);
-  const {refreshOrder, selectAttributeGroup, isSelected} = useAttributeGroupsIndexState();
+const AttributeGroupsDataGrid: FC<Props> = ({
+  attributeGroups,
+  onGroupCountChange,
+  isItemSelected,
+  selectionState,
+  onSelectionChange,
+  selectedCount,
+}) => {
+  const {refreshOrder} = useAttributeGroupsIndexState();
   const {sortGranted} = useAttributeGroupPermissions();
   const userContext = useUserContext();
   const {filteredGroups, search} = useFilteredAttributeGroups(attributeGroups);
@@ -120,19 +121,6 @@ const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange
           </Table>
         </>
       )}
-      <ToolbarWrapper style={{visibility: selectionState ? 'visible' : 'hidden'}}>
-        <Toolbar isVisible={!!selectionState}>
-          <Toolbar.SelectionContainer>
-            <Checkbox checked={selectionState} onChange={() => {}} />
-          </Toolbar.SelectionContainer>
-          <Toolbar.LabelContainer>
-            {translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}
-          </Toolbar.LabelContainer>
-          <Toolbar.ActionsContainer>
-            <MassDeleteAttributeGroups attributeGroups={selection.collection} />
-          </Toolbar.ActionsContainer>
-        </Toolbar>
-      </ToolbarWrapper>
     </Wrapper>
   );
 };
