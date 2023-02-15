@@ -31,6 +31,10 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
+const TableWrapper = styled.div`
+  margin-left: -40px;
+`;
+
 const InfoTop = styled.div`
   display: flex;
   gap: 15px;
@@ -107,44 +111,46 @@ const AttributeGroupsDataGrid: FC<Props> = ({
             </Dropdown>
             <p>{translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}</p>
           </InfoTop>
-          <Table
-            isDragAndDroppable={sortGranted && 'mixed' !== selectionState && !selectionState}
-            isSelectable={false}
-            onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
-          >
-            <Table.Header>
-              <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
-              {featureFlags.isEnabled('data_quality_insights') && (
-                <Table.HeaderCell>
-                  {translate('akeneo_data_quality_insights.attribute_group.dqi_status')}
-                </Table.HeaderCell>
-              )}
-            </Table.Header>
-            <Table.Body>
-              {filteredGroups.map(attributeGroup => (
-                <Table.Row
-                  key={attributeGroup.code}
-                  isSelected={isItemSelected(attributeGroup)}
-                  onSelectToggle={(selected: boolean) => onSelectionChange(attributeGroup, selected)}
-                >
-                  <Table.Cell>
-                    {getLabel(attributeGroup.labels, userContext.get('catalogLocale'), attributeGroup.code)}
-                  </Table.Cell>
-                  {featureFlags.isEnabled('data_quality_insights') && (
+          <TableWrapper>
+            <Table
+              isDragAndDroppable={sortGranted && 'mixed' !== selectionState && !selectionState}
+              isSelectable={true}
+              onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
+            >
+              <Table.Header>
+                <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
+                {featureFlags.isEnabled('data_quality_insights') && (
+                  <Table.HeaderCell>
+                    {translate('akeneo_data_quality_insights.attribute_group.dqi_status')}
+                  </Table.HeaderCell>
+                )}
+              </Table.Header>
+              <Table.Body>
+                {filteredGroups.map(attributeGroup => (
+                  <Table.Row
+                    key={attributeGroup.code}
+                    isSelected={isItemSelected(attributeGroup)}
+                    onSelectToggle={(selected: boolean) => onSelectionChange(attributeGroup, selected)}
+                  >
                     <Table.Cell>
-                      <Badge level={attributeGroup.is_dqi_activated ? 'primary' : 'danger'}>
-                        {translate(
-                          `akeneo_data_quality_insights.attribute_group.${
-                            attributeGroup.is_dqi_activated ? 'activated' : 'disabled'
-                          }`
-                        )}
-                      </Badge>
+                      {getLabel(attributeGroup.labels, userContext.get('catalogLocale'), attributeGroup.code)}
                     </Table.Cell>
-                  )}
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+                    {featureFlags.isEnabled('data_quality_insights') && (
+                      <Table.Cell>
+                        <Badge level={attributeGroup.is_dqi_activated ? 'primary' : 'danger'}>
+                          {translate(
+                            `akeneo_data_quality_insights.attribute_group.${
+                              attributeGroup.is_dqi_activated ? 'activated' : 'disabled'
+                            }`
+                          )}
+                        </Badge>
+                      </Table.Cell>
+                    )}
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          </TableWrapper>
         </>
       )}
     </Wrapper>
