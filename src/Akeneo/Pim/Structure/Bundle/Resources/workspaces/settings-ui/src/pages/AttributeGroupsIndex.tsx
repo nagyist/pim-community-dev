@@ -2,7 +2,15 @@ import React, {FC, useEffect, useState} from 'react';
 import {PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
 import {AttributeGroupsCreateButton, AttributeGroupsDataGrid, MassDeleteAttributeGroups} from '../components';
 import {useAttributeGroupsIndexState} from '../hooks';
-import {Breadcrumb, Checkbox, Toolbar, useSelection} from 'akeneo-design-system';
+import {
+  Breadcrumb,
+  Checkbox,
+  Toolbar,
+  useSelection,
+  useBooleanState,
+  Dropdown,
+  ArrowDownIcon,
+} from 'akeneo-design-system';
 import {AttributeGroup} from '../models';
 import styled from 'styled-components';
 
@@ -18,6 +26,7 @@ const Page = styled('div')`
 `;
 
 const AttributeGroupsIndex: FC = () => {
+  const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
   const {attributeGroups, load, isPending} = useAttributeGroupsIndexState();
   const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
     useSelection<AttributeGroup>(attributeGroups.length);
@@ -62,11 +71,26 @@ const AttributeGroupsIndex: FC = () => {
           selectionState={selectionState}
           onSelectionChange={onSelectionChange}
           selectedCount={selectedCount}
+          onSelectAllChange={onSelectAllChange}
         />
       </Content>
       <Toolbar isVisible={!!selectionState}>
         <Toolbar.SelectionContainer>
           <Checkbox checked={selectionState} onChange={() => {}} />
+          <Dropdown>
+            <ArrowDownIcon onClick={openDropdown} />
+            {isDropdownOpen && (
+              <Dropdown.Overlay onClose={closeDropdown}>
+                <Dropdown.Header>
+                  <Dropdown.Title>Select</Dropdown.Title>
+                </Dropdown.Header>
+                <Dropdown.ItemCollection>
+                  <Dropdown.Item onClick={() => onSelectAllChange(true)}>All Attribute groups</Dropdown.Item>
+                  <Dropdown.Item onClick={() => onSelectAllChange(false)}>No Attribute groups</Dropdown.Item>
+                </Dropdown.ItemCollection>
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
         </Toolbar.SelectionContainer>
         <Toolbar.LabelContainer>
           {translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}

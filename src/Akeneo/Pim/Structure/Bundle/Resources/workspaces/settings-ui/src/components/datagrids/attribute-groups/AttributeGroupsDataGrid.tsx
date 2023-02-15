@@ -1,7 +1,16 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {AttributeGroup} from '../../../models';
 import {NoResults} from '../../shared';
-import {Search, useAutoFocus, Table, Badge, Toolbar, Checkbox, useSelection} from 'akeneo-design-system';
+import {
+  Search,
+  useAutoFocus,
+  Table,
+  Badge,
+  Checkbox,
+  Dropdown,
+  ArrowDownIcon,
+  useBooleanState,
+} from 'akeneo-design-system';
 import {getLabel} from 'pimui/js/i18n';
 import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
 import {useDebounceCallback, useTranslate, useFeatureFlags, useUserContext} from '@akeneo-pim-community/shared';
@@ -14,6 +23,7 @@ type Props = {
   selectionState: boolean | 'mixed';
   onSelectionChange: (attributeGroup: AttributeGroup, selected: boolean) => void;
   selectedCount: number;
+  onSelectAllChange: (mode: boolean) => void;
 };
 
 const Wrapper = styled.div`
@@ -34,6 +44,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({
   selectionState,
   onSelectionChange,
   selectedCount,
+  onSelectAllChange,
 }) => {
   const {refreshOrder} = useAttributeGroupsIndexState();
   const {sortGranted} = useAttributeGroupPermissions();
@@ -43,6 +54,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({
   const [searchString, setSearchString] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const featureFlags = useFeatureFlags();
+  const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
 
   useAutoFocus(inputRef);
 
@@ -79,6 +91,20 @@ const AttributeGroupsDataGrid: FC<Props> = ({
         <>
           <InfoTop>
             <Checkbox checked={selectionState} onChange={() => {}} />
+            <Dropdown>
+              <ArrowDownIcon onClick={openDropdown} />
+              {isDropdownOpen && (
+                <Dropdown.Overlay onClose={closeDropdown}>
+                  <Dropdown.Header>
+                    <Dropdown.Title>Select</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item onClick={() => onSelectAllChange(true)}>All Attribute groups</Dropdown.Item>
+                    <Dropdown.Item onClick={() => onSelectAllChange(false)}>No Attribute groups</Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
             <p>{translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}</p>
           </InfoTop>
           <Table
