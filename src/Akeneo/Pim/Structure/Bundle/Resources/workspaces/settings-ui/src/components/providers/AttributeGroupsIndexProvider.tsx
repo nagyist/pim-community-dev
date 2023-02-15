@@ -20,7 +20,6 @@ const AttributeGroupsIndexContext = createContext<AttributeGroupsIndexState>({
   redirect: () => {},
   refresh: () => {},
   refreshOrder: () => {},
-  selectAttributeGroup: () => {},
   isPending: true,
 });
 

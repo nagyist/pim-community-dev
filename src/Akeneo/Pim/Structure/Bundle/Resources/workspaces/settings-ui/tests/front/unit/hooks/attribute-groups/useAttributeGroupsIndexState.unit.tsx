@@ -4,7 +4,6 @@ import {
   useAttributeGroupsIndexState,
   useInitialAttributeGroupsIndexState,
 } from '@akeneo-pim-community/settings-ui/src/hooks/attribute-groups';
-import {fetchAllAttributeGroups} from '@akeneo-pim-community/settings-ui/src/infrastructure/fetchers';
 import {saveAttributeGroupsOrder} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';
 import {anAttributeGroup} from '../../../utils/provideAttributeGroupHelper';
 import {act} from 'react-test-renderer';
@@ -170,10 +169,6 @@ describe('useInitialAttributeGroupsIndexState', () => {
 
     act(() => {
       result.current.refreshOrder([groupC, groupA, groupB]);
-    });
-
-    await act(async () => {
-      result.current.saveOrder();
     });
 
     expect(saveAttributeGroupsOrder).toBeCalledWith({

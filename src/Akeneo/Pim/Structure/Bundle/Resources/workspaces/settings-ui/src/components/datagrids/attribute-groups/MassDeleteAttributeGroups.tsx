@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {AttributeGroup} from '../../../models';
-import {Button, TextInput, useBooleanState, Field, useAutoFocus, Helper} from 'akeneo-design-system';
+import {Button, useBooleanState, useAutoFocus, Helper} from 'akeneo-design-system';
 import {DoubleCheckDeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 
 type MassDeleteAttributeGroupsProps = {
@@ -9,7 +9,7 @@ type MassDeleteAttributeGroupsProps = {
 const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
-  const [numberOfAttribute, setNumberOfAttribute] = useState<number>(0);
+  const [numberOfAttribute] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useAutoFocus(inputRef);
