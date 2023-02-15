@@ -3,7 +3,7 @@ import {useCallback} from 'react';
 
 type CallbackType = () => Promise<void>;
 
-export const useDeleteTestApp = (customAppId: string): CallbackType => {
+export const useDeleteCustomApp = (customAppId: string): CallbackType => {
     const url = useRoute('akeneo_connectivity_connection_custom_apps_rest_delete', {customAppId});
 
     return useCallback(async () => {
