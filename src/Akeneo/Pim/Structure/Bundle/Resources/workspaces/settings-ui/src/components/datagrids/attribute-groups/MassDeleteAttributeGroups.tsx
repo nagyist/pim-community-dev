@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {AttributeGroup} from '../../../models';
 import {Button, TextInput, useBooleanState, Field, useAutoFocus, Helper} from 'akeneo-design-system';
-import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
+import {DoubleCheckDeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 
 type MassDeleteAttributeGroupsProps = {
   attributeGroups: AttributeGroup[];
@@ -9,22 +9,17 @@ type MassDeleteAttributeGroupsProps = {
 const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
-  const [confirmationText, setConfirmationText] = useState<string>('');
   const [numberOfAttribute, setNumberOfAttribute] = useState<number>(0);
-  const isValid = translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word') === confirmationText;
   const inputRef = useRef<HTMLInputElement>(null);
 
   useAutoFocus(inputRef);
 
   const handleConfirm = async () => {
-    if (!isValid) return;
-
     //onConfirm();
   };
 
   const handleCancel = () => {
     closeMassDeleteModal();
-    setConfirmationText('');
   };
 
   return (
@@ -33,11 +28,14 @@ const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsP
         Delete
       </Button>
       {isMassDeleteModalOpen && null !== attributeGroups && (
-        <DeleteModal
+        <DoubleCheckDeleteModal
           title={translate('pim_enrich.entity.attribute_group.mass_delete.title')}
+          doubleCheckInputLabel={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_phrase', {
+            confirmation_word: translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word'),
+          })}
+          textToCheck={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word')}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
-          canConfirmDelete={isValid}
         >
           <p>
             {translate(
@@ -53,19 +51,7 @@ const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsP
               })}
             </Helper>
           )}
-          <Field
-            label={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_phrase', {
-              confirmation_word: translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word'),
-            })}
-          >
-            <TextInput
-              ref={inputRef}
-              value={confirmationText}
-              onChange={setConfirmationText}
-              onSubmit={handleConfirm}
-            />
-          </Field>
-        </DeleteModal>
+        </DoubleCheckDeleteModal>
       )}
     </>
   );
